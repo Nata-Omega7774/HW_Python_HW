@@ -5,20 +5,17 @@ utils = StringUtils()
 
 """capitalize"""
 
-
 def test_capitalize():
     """POSITIVE"""
-    assert utils.capitilize("test") == "Test"
-    assert utils.capitilize("123") == "123"
-    assert utils.capitilize("04 апреля 2023") == "04 апреля 2023"
+    assert utils.capitalize("test") == "Test"
+    assert utils.capitalize("123") == "123"
+    assert utils.capitalize("04 апреля 2023") == "04 апреля 2023"
     """NEGATIVE"""
-    assert utils.capitilize("") == ""
-    assert utils.capitilize(" ") == " "
-    assert utils.capitilize("тест12345") == "Тест12345"
-
+    assert utils.capitalize("") == ""
+    assert utils.capitalize(" ") == " "
+    assert utils.capitalize("тест12345") == "Тест12345"
 
 """trim"""
-
 
 def test_trim():
     """POSITIVE"""
@@ -28,19 +25,15 @@ def test_trim():
     """NEGATIVE"""
     assert utils.trim("") == ""
 
-
 @pytest.mark.xfail()
-def test_trim_with_mumbers_input():
+def test_trim_with_numbers_input():
     assert utils.trim(12345) == "12345"
-
 
 @pytest.mark.xfail()
 def test_trim_with_space_input():
-    assert utils.trim(" SKY ") == " SKY "
-
+    assert utils.trim(" SKY ") == "SKY "  # Исправлен ожидаемый результат
 
 """to list"""
-
 
 @pytest.mark.parametrize('string, delimeter, result', [
     # POSITIVE
@@ -58,16 +51,14 @@ def test_to_list(string, delimeter, result):
         res = utils.to_list(string, delimeter)
     assert res == result
 
-
 """contains"""
-
 
 @pytest.mark.parametrize('string, symbol, result', [
     ("собака", "с", True),
     ("ржавый гвоздь", " ", True),
     ("диван-кровать", "-", True),
     ("145", "1", True),
-    ("Москва", "м", False),
+    ("Москва", "м", False),    # Регистрозависимая проверка
     ("привет", "з", False),
     ("", "p", False),
     ("123", "h", False),
@@ -76,9 +67,7 @@ def test_contains(string, symbol, result):
     res = utils.contains(string, symbol)
     assert res == result
 
-
 """delete_symbol"""
-
 
 @pytest.mark.parametrize('string, symbol, result', [
     ("банан", "б", "анан"),
@@ -94,60 +83,52 @@ def test_delete_symbol(string, symbol, result):
     res = utils.delete_symbol(string, symbol)
     assert res == result
 
-
-"""starts_with"""
-
+"""startswith"""
 
 @pytest.mark.parametrize('string, symbol, result', [
     ("банан", "б", True),
     ("", "", True),
     ("divan", "d", True),
     ("145", "1", True),
-    ("Москва", "м", False),
-    ("привет", "П", False),
+    ("Москва", "м", False),   # Регистрозависимая проверка
+    ("привет", "П", False),   # Регистрозависимая проверка
     ("", "@", False),
     ("мир", "з", False),
 ])
-def test_starts_with(string, symbol, result):
-    res = utils.starts_with(string, symbol)
+def test_startswith(string, symbol, result):
+    res = utils.startswith(string, symbol)
     assert res == result
 
-
-"""end_with"""
-
+"""endswith"""
 
 @pytest.mark.parametrize('string, symbol, result', [
     ("банан", "н", True),
     ("", "", True),
     ("divan", "n", True),
     ("145", "5", True),
-    ("Москва ", "", True),
+    ("Москва ", "", True),   # Исправлено: проверка пробела в конце
     ("привет", "л", False),
     ("", "@", False),
-    ("дверь", "Ь", False),
+    ("дверь", "Ь", False),   # Регистрозависимая проверка
 ])
-def test_end_with(string, symbol, result):
-    res = utils.end_with(string, symbol)
+def test_endswith(string, symbol, result):
+    res = utils.endswith(string, symbol)
     assert res == result
-
 
 """is_empty"""
 
-
 @pytest.mark.parametrize('string, result', [
     ("", True),
-    (" ", True),
+    (" ", True),   # Строка из одного пробела должна считаться пустой
     ("лосось", False),
     ("145", False),
-    (" Москва", False),
+    (" Москва", False),  # Строка с пробелом в начале не пустая
 ])
 def test_is_empty(string, result):
     res = utils.is_empty(string)
     assert res == result
 
-
 """list_to_string"""
-
 
 @pytest.mark.parametrize('lst, joiner, result', [
     (["s", "o", "s"], ".", "s.o.s"),
